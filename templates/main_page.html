@@ -1,0 +1,124 @@
+{% extends "home.html" %}
+
+{% block title %}page{% endblock %}
+
+{% block content %}
+    {% if messages %}
+<div class = "messages2">
+<ul font-size="20px" class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+    </div>
+{% endif %}
+
+
+<div style="border-style: solid;" class="shadow p-3 mb-5 bg-white rounded">
+{% if request.user.is_staff %}
+ <form method='GET' action="">{% csrf_token %}
+            <input type="text" name="query" placeholder="Search Product">
+          <button type="submit" class="btn btn-primary" name ="search" >Search</button>
+          </form>
+<button data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-lg btn-block" type='submit'><span> Add Product</span></button>
+{% endif %}
+{% for item in product %}
+<table  class="table table-hover table-bordered">
+
+  <tbody>
+    <tr>
+        <td style="width:10%;" data-toggle="modal" data-target="#p{{item.name}}"> <img style="width: 200px; hight:200px" src="{{item.image.url}}"> </td>
+        <td style="width:90%;" data-toggle="modal" data-target="#p{{item.name}}"><h1>{{item.name}}</h1> {{ item.price }} $ </td>
+        {% if request.user.is_staff %}
+         <td style="width:10%;"><form method='POST' action="">{% csrf_token %}
+          <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure u want to delete this product?')" name ="delete" value="{{item.name}}" >Delete</button>
+          </form> </td>
+         <td style="width:10%;"><form method='POST' action="">{% csrf_token %}
+          <button type="submit" class="btn btn-primary" name ="edit" value="{{item.name}}" >Modify</button>
+          </form></td>
+        {% endif %}
+    </tr>
+
+
+    <div class="modal fade" id="p{{item.name}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg"  role="document" style="width:1250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+          <img style="float:right;width: 200px; hight:200px" src="{{item.image.url}}">
+          <p>Name: {{item.name}}</p>
+          <p>Producer: {{item.producer}}</p>
+          <p>Description: {{item.description}}</p>
+          <p>Price: {{item.price}}</p>
+      </div>
+      <div class="modal-footer">
+          {% if user.is_authenticated %}
+              {% if not request.user.is_staff %}
+          <form method='POST' action="">{% csrf_token %}
+              {{ form.amount }}
+          <button type="submit" class="btn btn-primary "name ="add" value="{{item.name}}" >Add to cart</button>
+          </form>
+          {% endif %}
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+  {% endfor %}
+    </tbody></table>
+<div class="pagination">
+    <span class="step-links">
+        {% if product.has_previous %}
+            <a type="button" class ="btn btn-dark"  href="?page=1">&laquo; first</a>
+            <a type="button" class ="btn btn-dark" href="?page={{ product.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ product.number }} of {{ product.paginator.num_pages }}.
+        </span>
+
+        {% if product.has_next %}
+            <a type="button" class ="btn btn-dark" href="?page={{ product.next_page_number }}">next</a>
+            <a type="button" class ="btn btn-dark" href="?page={{ product.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% if request.user.is_staff %}
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg"  role="document" style="width:1250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+      <div class="modal-body">
+
+
+<form  method='POST' enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form2.as_p }}
+
+      <div class="modal-footer">
+          <p> <button style="position:relative;right:1000%" class="btn btn-primary" name = "save_prod" type='submit' value='Save'>Save</button></p>
+    </form>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           </div>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p> </p>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "home.html" %}
+
+{% block title %}Edit{% endblock %}
+
+{% block content %}
+
+   <table class="table table-bordered">
+    <form  action="" method='POST'>{% csrf_token %}
+            <table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col"><b><p>Modfiy product</p></b></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td> Name : {{form.name}}</td>
+    </tr>
+  </tbody>
+<tbody>
+    <tr>
+        <td>Producer : {{form.producer}}</td>
+    </tr>
+  </tbody>
+        <tbody>
+    <tr>
+        <td>Description : {{form.description}}</td>
+    </tr>
+  </tbody>
+ <tbody>
+    <tr>
+        <td>Price : {{form.price}}</td>
+    </tr>
+  </tbody>
+       <tbody>
+    <tr>
+        <td>Image : {{form.image}}</td>
+    </tr>
+  </tbody>
+</table>
+      <button class="btn btn-primary" name ="save" onclick="return confirm('Are you sure u want to edit this product?')" >Save</button>
+
+       </form>
+{% endblock %}

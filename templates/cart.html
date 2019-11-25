@@ -1,0 +1,60 @@
+{% extends "home.html" %}
+
+{% block title %}sign up{% endblock %}
+
+{% block content %}
+
+    {% if messages %}
+<div class = "messages2">
+<ul font-size="20px" class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+    </div>
+{% endif %}
+
+
+{% for item in cart %}
+    {% for item2 in item.product_list.all %}
+
+
+<table class="table table-hover table-bordered">
+
+  <tbody>
+    <tr>
+        <td style="width:90%;" data-toggle="modal" data-target="#p{{item2.product.name}}"><h5>{{item2.product.name}}</h5> {{ item2.amount }} pieces</td>
+         <td style="width:5%;"><form method='POST' action="">{% csrf_token %}
+          <button type="submit" class="btn btn-danger" name ="remove" value="{{item2.pk}}" >Remove</button>
+          </form> </td>
+    </tr>
+
+
+    <div class="modal fade" id="p{{item2.product.name}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg"  role="document" style="width:1250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+          <img style="float:right;width: 200px; hight:200px" src="{{item2.product.image.url}}">
+          <p>Name: {{item2.product.name}}</p>
+          <p>Producer: {{item2.product.producer}}</p>
+          <p>Description: {{item2.product.description}}</p>
+          <p>Price: {{item2.product.price}}</p>
+      </div>
+       <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+  </tbody></table>
+
+
+    {% endfor %}
+{% endfor %}
+<form  action="" method='POST'>{% csrf_token %}
+      <button class="btn btn-primary btn-lg btn-block" name ="order" onclick="return confirm('Are you sure u want to submit this order?')" value="{{cart.pk}}" >Submit this Order</button>
+      </form>
+{% endblock %}

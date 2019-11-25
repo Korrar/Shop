@@ -1,0 +1,124 @@
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!-- Boostrap -->
+
+<nav class="navbar navbar-dark bg-dark justify-content-left">
+
+        <li class="nav-item">
+        <a class="navbar-brand" href="/"><button type="button" style = "font-size:20px" class="btn btn-outline-light">Home</button></a>
+        </li>
+
+  {% if user.is_authenticated %}
+      {% if not request.user.is_staff %}
+     <div class="p-2">
+      <li>
+        <a  href="/cart/"><button  type="button " class="btn btn-dark">Your Cart</button></a>
+      </li>
+    </div>
+          {% endif %}
+    {% endif %}
+    <div class="p-2 flex-fill bd-highlight">
+      <li>
+        <a  href="/list/"><button  type="button " class="btn btn-dark">Product List</button></a>
+      </li>
+    </div>
+
+
+
+</nav>
+
+
+<div style="padding:5px;">
+{% block content %}
+    {% if user.is_authenticated %}
+    <div class="card text-center">
+  <div class="card-header">
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Welcome {{ user }}</h5>
+    <p class="card-text">You can always logout and create another account.</p>
+      <form action= "/" method="POST"> {% csrf_token %}
+    <button name ="logout" class="btn btn-primary">Logout</button>
+          </form>
+  </div>
+  <div class="card-footer text-muted">
+  </div>
+</div>
+    {%  else %}
+    <div class="card text-center" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+  <div class="card-header">
+    Sign in
+  </div>
+
+  <div class="card-body">
+
+
+      <div class="card" style="left:30%; display: flex;
+            justify-content: center;width: 46rem;">
+
+  <div class="card-body">
+
+
+
+      <form method="post">
+    {% csrf_token %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                  {{ error|escape }}
+             </div>
+        {% endfor %}
+     {% endfor %}
+        {% for error in form.non_field_errors %}
+           <div class="alert alert-danger">
+                {{ error|escape }}
+            </div>
+     {% endfor %}
+    {% endif %}
+
+<table class="table table-bordered table-light">
+  <tbody>
+    <tr>
+      <td scope="col">Username: {{ form.username }}</td>
+      <td scope="col">Password: {{ form.password1 }}</td>
+      <td scope="col">Confirm Password:{{ form.password2 }}</td>
+    </tr>
+    <tr>
+      <td>First Name: {{ form.first_name }}</td>
+      <td>Last Name: {{ form.last_name }}</td>
+      <td>Email Address : {{ form.email }}</td>
+    </tr>
+
+    </tbody>
+
+        </table>
+        <button class="btn btn-primary" type="submit" value="Submit"> Submit </button>
+
+        </form>
+
+
+
+        </div>
+        </div>
+    </div>
+  <div class="card-footer text-muted">
+    <h6 class="card-subtitle mb-2 text-muted">Have account already ? <a href="/accounts/login"  />login <a/> </h6>
+  </div>
+</div>
+
+    {% endif %}
+
+{% endblock %}
+</div>
+
+
+<nav class="navbar navbar-dark bg-dark fixed-bottom">
+    <p style="color:white"> Best shopping website ever </p>   <form action= "/" method="POST"> {% csrf_token %}
+    <button name ="logout" class="btn btn-primary">Logout</button>
+          </form>
+</nav>
