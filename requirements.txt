@@ -16,7 +16,7 @@ Pillow==6.2.1
 pluggy==0.3.1
 py==1.8.0
 pytz==2019.3
-PyYAML==3.11
+PyYAML==5.1
 qrcode==6.1
 qrplatba==0.3.4
 rabbit==1.2.0
