@@ -14,7 +14,7 @@ InvoiceGenerator==1.0.1
 kombu==3.0.37
 Pillow==6.2.1
 pluggy==0.3.1
-py==1.8.0
+py==1.10.0
 pytz==2019.3
 qrcode==6.1
 qrplatba==0.3.4
